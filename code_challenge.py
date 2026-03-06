@@ -156,8 +156,12 @@ class MiniVenmo:
         # Bobby paid Carol $5.00 for Coffee
         # Carol paid Bobby $15.00 for Lunch
         # TODO: add code here
+        all_feeds = []
         for payment in feed:
-            print(f'{payment.actor} paid ${payment.target} for {payment.note}')
+            feed_line = f'{payment.actor.username} paid {payment.target.username} ${payment.amount:.2f} for {payment.note}'
+            all_feeds.append(feed_line)
+            print(feed_line)
+        return all_feeds
 
 
     @classmethod
@@ -234,8 +238,9 @@ class TestUser(unittest.TestCase):
         feed = user_a.retrieve_feed()
 
         assert(all([type(f) is Payment for f in feed]))
-        assert('Bobby paid Carol $5.00 for Payfum' in venmo.render_feed(feed))
-        # venmo.render_feed(feed)
+        feeds = venmo.render_feed(feed)
+        assert('Bobby paid Carol $5.00 for Parfum' in feeds)
+        assert('Carol paid Bobby $15.00 for Lunch' in feeds)
 
 
 if __name__ == '__main__':
